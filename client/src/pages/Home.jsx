@@ -13,31 +13,6 @@ const Home = () => {
             <p className="text-center text-gray-500 text-sm font-medium mb-8 uppercase tracking-wider">
               Trusted by leading organizations worldwide
             </p>
-            <div className="flex justify-center items-center gap-4 mb-8">
-              <div className="flex -space-x-4">
-                <img 
-                  src="https://randomuser.me/api/portraits/women/1.jpg" 
-                  alt="HR Professional" 
-                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
-                />
-                <img 
-                  src="https://randomuser.me/api/portraits/men/2.jpg" 
-                  alt="HR Professional" 
-                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
-                />
-                <img 
-                  src="https://randomuser.me/api/portraits/women/3.jpg" 
-                  alt="HR Professional" 
-                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
-                />
-                <img 
-                  src="https://randomuser.me/api/portraits/men/4.jpg" 
-                  alt="HR Professional" 
-                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
-                />
-              </div>
-              <p className="text-lg font-bold text-gray-900">1,000+ HR Teams</p>
-            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
               <div className="text-center text-2xl font-bold text-gray-400">TechCorp</div>
               <div className="text-center text-2xl font-bold text-gray-400">InnovateLabs</div>
