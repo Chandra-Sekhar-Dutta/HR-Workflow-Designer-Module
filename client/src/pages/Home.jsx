@@ -13,6 +13,31 @@ const Home = () => {
             <p className="text-center text-gray-500 text-sm font-medium mb-8 uppercase tracking-wider">
               Trusted by leading organizations worldwide
             </p>
+            <div className="flex justify-center items-center gap-4 mb-8">
+              <div className="flex -space-x-4">
+                <img 
+                  src="https://randomuser.me/api/portraits/women/1.jpg" 
+                  alt="HR Professional" 
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
+                />
+                <img 
+                  src="https://randomuser.me/api/portraits/men/2.jpg" 
+                  alt="HR Professional" 
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
+                />
+                <img 
+                  src="https://randomuser.me/api/portraits/women/3.jpg" 
+                  alt="HR Professional" 
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
+                />
+                <img 
+                  src="https://randomuser.me/api/portraits/men/4.jpg" 
+                  alt="HR Professional" 
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover"
+                />
+              </div>
+              <p className="text-lg font-bold text-gray-900">1,000+ HR Teams</p>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
               <div className="text-center text-2xl font-bold text-gray-400">TechCorp</div>
               <div className="text-center text-2xl font-bold text-gray-400">InnovateLabs</div>
@@ -112,7 +137,11 @@ const Home = () => {
                 </div>
                 <p className="text-gray-700 mb-6 italic">"FlowForge HR transformed our onboarding process. What used to take weeks now takes days. Absolutely game-changing!"</p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full"></div>
+                  <img 
+                    src="https://randomuser.me/api/portraits/women/44.jpg" 
+                    alt="Sarah Johnson" 
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
                   <div className="ml-4">
                     <p className="font-bold text-gray-900">Sarah Johnson</p>
                     <p className="text-sm text-gray-600">HR Director, TechCorp</p>
@@ -130,7 +159,11 @@ const Home = () => {
                 </div>
                 <p className="text-gray-700 mb-6 italic">"The visual designer is incredibly intuitive. Our team was up and running in minutes without any training."</p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full"></div>
+                  <img 
+                    src="https://randomuser.me/api/portraits/men/32.jpg" 
+                    alt="Michael Chen" 
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
                   <div className="ml-4">
                     <p className="font-bold text-gray-900">Michael Chen</p>
                     <p className="text-sm text-gray-600">VP of Operations, GlobalHR</p>
@@ -148,7 +181,11 @@ const Home = () => {
                 </div>
                 <p className="text-gray-700 mb-6 italic">"Best investment we've made. The ROI was evident within the first month. Highly recommend!"</p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full"></div>
+                  <img 
+                    src="https://randomuser.me/api/portraits/women/68.jpg" 
+                    alt="Emily Rodriguez" 
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
                   <div className="ml-4">
                     <p className="font-bold text-gray-900">Emily Rodriguez</p>
                     <p className="text-sm text-gray-600">Chief People Officer, InnovateLabs</p>
