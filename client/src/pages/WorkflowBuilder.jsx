@@ -353,6 +353,11 @@ const WorkflowBuilder = () => {
 
   // Auto-layout function
   const autoLayout = React.useCallback(() => {
+    if (currentWorkspace.nodes.length === 0) {
+      alert('⚠️ No nodes in canvas! Please add nodes before using auto-layout.')
+      return
+    }
+    
     setWorkspaces(prev => prev.map(w => {
       if (w.id === activeWorkspaceId) {
         const layoutNodes = [...w.nodes]
