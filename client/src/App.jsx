@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import WorkflowBuilder from './pages/WorkflowBuilder'
+import LiveChat from './pages/LiveChat'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/contact/livechat" element={<LiveChat />} />
             <Route path="/workflow-builder" element={<WorkflowBuilder />} />
           </Routes>
         </main>

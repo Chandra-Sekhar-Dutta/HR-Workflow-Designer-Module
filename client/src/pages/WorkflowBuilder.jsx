@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
 import WorkflowCanvas from '../components/Canvas/WorkflowCanvas'
@@ -24,6 +24,7 @@ const WorkflowBuilder = () => {
       }],
       edges: [],
       selectedNode: null,
+      deletedNodes: [],
     }
   ])
   const [activeWorkspaceId, setActiveWorkspaceId] = useState(1)
@@ -32,6 +33,7 @@ const WorkflowBuilder = () => {
   // Undo/Redo history management
   const [history, setHistory] = useState({})
   const [historyIndex, setHistoryIndex] = useState({})
+
   
   const [isSandboxOpen, setIsSandboxOpen] = useState(false)
   const [isValidationOpen, setIsValidationOpen] = useState(false)
@@ -58,6 +60,7 @@ const WorkflowBuilder = () => {
       }],
       edges: [],
       selectedNode: null,
+      deletedNodes: [],
     }
     setWorkspaces([...workspaces, newWorkspace])
     setActiveWorkspaceId(newWorkspace.id)
@@ -208,11 +211,19 @@ const WorkflowBuilder = () => {
   const deleteNode = React.useCallback((nodeId) => {
     setWorkspaces(prev => prev.map(w => {
       if (w.id === activeWorkspaceId) {
+        const nodeToDelete = w.nodes.find(n => n.id === nodeId)
+        const deletedEdges = w.edges.filter(e => e.source === nodeId || e.target === nodeId)
+        
         return {
           ...w,
           nodes: w.nodes.filter(n => n.id !== nodeId),
           edges: w.edges.filter(e => e.source !== nodeId && e.target !== nodeId),
-          selectedNode: w.selectedNode?.id === nodeId ? null : w.selectedNode
+          selectedNode: w.selectedNode?.id === nodeId ? null : w.selectedNode,
+          deletedNodes: [...(w.deletedNodes || []), {
+            node: nodeToDelete,
+            edges: deletedEdges,
+            deletedAt: Date.now()
+          }]
         }
       }
       return w
@@ -220,8 +231,37 @@ const WorkflowBuilder = () => {
     setTimeout(saveToHistory, 0)
   }, [activeWorkspaceId, saveToHistory])
 
+  // Restore deleted node
+  const restoreNode = React.useCallback((deletedItem) => {
+    setWorkspaces(prev => prev.map(w => {
+      if (w.id === activeWorkspaceId) {
+        return {
+          ...w,
+          nodes: [...w.nodes, deletedItem.node],
+          edges: [...w.edges, ...deletedItem.edges],
+          deletedNodes: w.deletedNodes.filter(d => d.deletedAt !== deletedItem.deletedAt)
+        }
+      }
+      return w
+    }))
+    setTimeout(saveToHistory, 0)
+  }, [activeWorkspaceId, saveToHistory])
+
+  // Permanently delete a node from deleted list
+  const permanentlyDeleteNode = React.useCallback((deletedAt) => {
+    setWorkspaces(prev => prev.map(w => {
+      if (w.id === activeWorkspaceId) {
+        return {
+          ...w,
+          deletedNodes: w.deletedNodes.filter(d => d.deletedAt !== deletedAt)
+        }
+      }
+      return w
+    }))
+  }, [activeWorkspaceId])
+
   // Undo function
-  const undo = React.useCallback(() => {
+  const undo = useCallback(() => {
     const workspaceHistory = history[activeWorkspaceId]
     const currentIndex = historyIndex[activeWorkspaceId] ?? -1
     
@@ -395,21 +435,6 @@ const WorkflowBuilder = () => {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Show Deleted Stages</span>
-                <button
-                  onClick={() => setShowDeletedStages(!showDeletedStages)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    showDeletedStages ? 'bg-blue-600' : 'bg-gray-300'
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      showDeletedStages ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
-                </button>
-              </div>
               <button 
                 onClick={() => setIsValidationOpen(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
@@ -462,6 +487,78 @@ const WorkflowBuilder = () => {
           />
         )}
       </div>
+
+      {/* Deleted Stages Panel */}
+      {showDeletedStages && currentWorkspace?.deletedNodes && currentWorkspace.deletedNodes.length > 0 && (
+        <div className="fixed bottom-24 right-8 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+          <div className="bg-gradient-to-r from-red-500 to-orange-500 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              <h3 className="font-semibold text-white">Deleted Stages</h3>
+            </div>
+            <button
+              onClick={() => setShowDeletedStages(false)}
+              className="text-white hover:bg-white/20 rounded p-1 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          <div className="max-h-96 overflow-y-auto p-4 space-y-3">
+            {currentWorkspace.deletedNodes.map((deletedItem) => (
+              <div
+                key={deletedItem.deletedAt}
+                className="bg-gray-50 rounded-lg p-3 border border-gray-200 hover:border-emerald-300 transition-colors"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                        deletedItem.node.type === 'start' ? 'bg-green-100 text-green-700' :
+                        deletedItem.node.type === 'end' ? 'bg-red-100 text-red-700' :
+                        deletedItem.node.type === 'task' ? 'bg-blue-100 text-blue-700' :
+                        deletedItem.node.type === 'approval' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-purple-100 text-purple-700'
+                      }`}>
+                        {deletedItem.node.type}
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {deletedItem.node.data.label}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Deleted {new Date(deletedItem.deletedAt).toLocaleTimeString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => restoreNode(deletedItem)}
+                    className="flex-1 px-3 py-1.5 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition-colors text-xs font-medium flex items-center justify-center gap-1"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Restore
+                  </button>
+                  <button
+                    onClick={() => permanentlyDeleteNode(deletedItem.deletedAt)}
+                    className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-red-100 hover:text-red-600 transition-colors text-xs font-medium"
+                    title="Delete permanently"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Node Palette Modal */}
       <NodePalette

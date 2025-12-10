@@ -83,31 +83,72 @@ const SandboxPanel = ({ nodes, edges, isOpen, onClose }) => {
 
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-gray-800">Execution Steps:</h3>
-              {simulationResult.steps.map((step, index) => (
-                <div
-                  key={index}
-                  className="p-3 bg-gray-50 border border-gray-200 rounded"
-                >
-                  <div className="flex items-start gap-2">
-                    <span className="text-xs font-semibold text-blue-600">
-                      Step {index + 1}
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-800">
-                        {step.nodeName}
-                      </p>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {step.description}
-                      </p>
-                      {step.output && (
-                        <p className="text-xs text-green-700 mt-1">
-                          ✓ {step.output}
+              {simulationResult.steps.map((step, index) => {
+                const node = nodes.find(n => n.data.label === step.nodeName)
+                return (
+                  <div
+                    key={index}
+                    className="p-3 bg-gray-50 border border-gray-200 rounded"
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="text-xs font-semibold text-blue-600">
+                        Step {index + 1}
+                      </span>
+                      <div className="flex-1">
+                        <p className="text-xs font-medium text-gray-800">
+                          {step.nodeName}
                         </p>
-                      )}
+                        <p className="text-xs text-gray-600 mt-1">
+                          {step.description}
+                        </p>
+                        
+                        {/* Node Metadata */}
+                        {node && (
+                          <div className="mt-2 p-2 bg-white rounded border border-gray-200">
+                            <p className="text-xs font-semibold text-gray-700 mb-1">Metadata:</p>
+                            <div className="space-y-0.5">
+                              <p className="text-xs text-gray-600">
+                                <span className="font-medium">Type:</span> {node.type}
+                              </p>
+                              {node.data.assignee && (
+                                <p className="text-xs text-gray-600">
+                                  <span className="font-medium">Assignee:</span> {node.data.assignee}
+                                </p>
+                              )}
+                              {node.data.approverRole && (
+                                <p className="text-xs text-gray-600">
+                                  <span className="font-medium">Approver:</span> {node.data.approverRole}
+                                </p>
+                              )}
+                              {node.data.action && (
+                                <p className="text-xs text-gray-600">
+                                  <span className="font-medium">Action:</span> {node.data.action}
+                                </p>
+                              )}
+                              {node.data.description && (
+                                <p className="text-xs text-gray-600">
+                                  <span className="font-medium">Description:</span> {node.data.description}
+                                </p>
+                              )}
+                              {node.data.dueDate && (
+                                <p className="text-xs text-gray-600">
+                                  <span className="font-medium">Due Date:</span> {node.data.dueDate}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {step.output && (
+                          <p className="text-xs text-green-700 mt-2">
+                            ✓ {step.output}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )}

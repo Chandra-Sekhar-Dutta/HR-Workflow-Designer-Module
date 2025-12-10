@@ -28,16 +28,44 @@ const ValidationPanel = ({ nodes, edges, isOpen, onClose }) => {
         
         <div className="p-4 overflow-y-auto max-h-[calc(80vh-140px)]">
           {!hasIssues ? (
-            <div className="flex flex-col items-center justify-center py-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
-                </svg>
+            <div className="py-4">
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-3 text-green-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span className="text-sm font-medium">Start node with no incoming edges</span>
+                </div>
+                <div className="flex items-center gap-3 text-green-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span className="text-sm font-medium">End node with no outgoing edges</span>
+                </div>
+                <div className="flex items-center gap-3 text-green-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span className="text-sm font-medium">All nodes connected</span>
+                </div>
+                <div className="flex items-center gap-3 text-green-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span className="text-sm font-medium">No cycles</span>
+                </div>
+                <div className="flex items-center gap-3 text-green-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span className="text-sm font-medium">Mandatory fields present</span>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Workflow is Valid!</h3>
-              <p className="text-sm text-gray-600 text-center">
-                Your workflow has no validation errors and is ready to be saved.
-              </p>
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm font-semibold text-green-800 text-center">
+                  Workflow structure is valid
+                </p>
+              </div>
             </div>
           ) : (
             <div className="space-y-4">
