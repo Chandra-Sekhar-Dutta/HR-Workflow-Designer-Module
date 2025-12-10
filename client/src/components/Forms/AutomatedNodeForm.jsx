@@ -10,9 +10,17 @@ const AutomatedNodeForm = ({ node, onUpdate }) => {
   })
 
   useEffect(() => {
-    // Fetch automation actions
-    const actions = automationApi.getAutomationActions()
-    setAutomationActions(actions)
+    // Fetch automation actions asynchronously
+    const loadActions = async () => {
+      try {
+        const actions = await automationApi.getAutomationActions()
+        setAutomationActions(actions)
+      } catch (error) {
+        console.error('Failed to load automation actions:', error)
+      }
+    }
+    
+    loadActions()
   }, [])
 
   const handleChange = (e) => {
