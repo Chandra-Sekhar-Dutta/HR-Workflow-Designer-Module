@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
 import WorkflowCanvas from '../components/Canvas/WorkflowCanvas'
 import NodeConfigPanel from '../components/Panels/NodeConfigPanel'
+import EdgeConfigPanel from '../components/Panels/EdgeConfigPanel'
 import SandboxPanel from '../components/Panels/SandboxPanel'
 import ValidationPanel from '../components/Panels/ValidationPanel'
 import NodePalette from '../components/Canvas/NodePalette'
@@ -24,6 +25,7 @@ const WorkflowBuilder = () => {
       }],
       edges: [],
       selectedNode: null,
+      selectedEdge: null,
       deletedNodes: [],
     }
   ])
@@ -40,42 +42,29 @@ const WorkflowBuilder = () => {
   const [showDeletedStages, setShowDeletedStages] = useState(false)
   const [showNodePalette, setShowNodePalette] = useState(false)
 
-  // Get current workspace
-  const currentWorkspace = workspaces.find(w => w.id === activeWorkspaceId)
-  const nodes = currentWorkspace?.nodes || []
-  const edges = currentWorkspace?.edges || []
-  const selectedNode = currentWorkspace?.selectedNode || null
-
-  // Add new workspace
-  const addWorkspace = () => {
-    const newCounter = workspaceCounter + 1
-    const newWorkspace = {
-      id: Date.now(),
-      name: `W${newCounter}`,
-      nodes: [{
-        id: `start-initial-${Date.now()}`,
-        type: 'start',
-        position: { x: 250, y: 50 },
-        data: { label: 'Initiator', assignee: 'Admin' },
-      }],
-      edges: [],
-      selectedNode: null,
-      deletedNodes: [],
+  // Function to determine edge color based on node types
+  const getEdgeColor = React.useCallback((sourceType, targetType) => {
+    const colorMap = {
+      'start-task': '#10b981',      // emerald
+      'start-approval': '#3b82f6',  // blue
+      'start-automated': '#8b5cf6', // purple
+      'task-task': '#14b8a6',       // teal
+      'task-approval': '#f59e0b',   // amber
+      'task-automated': '#ec4899',  // pink
+      'task-end': '#22c55e',        // green
+      'approval-task': '#06b6d4',   // cyan
+      'approval-approval': '#6366f1', // indigo
+      'approval-automated': '#a855f7', // purple
+      'approval-end': '#10b981',    // emerald
+      'automated-task': '#f97316',  // orange
+      'automated-approval': '#ef4444', // red
+      'automated-automated': '#8b5cf6', // violet
+      'automated-end': '#84cc16',   // lime
+      'start-end': '#6b7280',       // gray
     }
-    setWorkspaces([...workspaces, newWorkspace])
-    setActiveWorkspaceId(newWorkspace.id)
-    setWorkspaceCounter(newCounter)
-  }
-
-  // Close workspace
-  const closeWorkspace = (workspaceId) => {
-    if (workspaces.length === 1) return // Don't close last workspace
-    const newWorkspaces = workspaces.filter(w => w.id !== workspaceId)
-    setWorkspaces(newWorkspaces)
-    if (activeWorkspaceId === workspaceId) {
-      setActiveWorkspaceId(newWorkspaces[0].id)
-    }
-  }
+    const key = `${sourceType}-${targetType}`
+    return colorMap[key] || '#6b7280' // default gray
+  }, [])
 
   // Save current state to history
   const saveToHistory = React.useCallback(() => {
@@ -108,6 +97,76 @@ const WorkflowBuilder = () => {
       w.id === activeWorkspaceId ? { ...w, ...updates } : w
     ))
   }, [activeWorkspaceId])
+
+  // Get current workspace
+  const currentWorkspace = workspaces.find(w => w.id === activeWorkspaceId)
+  const nodes = currentWorkspace?.nodes || []
+  const selectedNode = currentWorkspace?.selectedNode || null
+  const selectedEdge = currentWorkspace?.selectedEdge || null
+
+  // Prepare edges with callbacks using useMemo
+  const edges = React.useMemo(() => {
+    const rawEdges = currentWorkspace?.edges || []
+    return rawEdges.map(edge => {
+      const sourceNode = nodes.find(n => n.id === edge.source)
+      const targetNode = nodes.find(n => n.id === edge.target)
+      const edgeColor = getEdgeColor(sourceNode?.type, targetNode?.type)
+      
+      return {
+        ...edge,
+        type: 'custom',
+        data: {
+          ...edge.data,
+          label: edge.data?.label || '',
+          color: edgeColor,
+          onEdgeClick: (edgeId) => {
+            const foundEdge = rawEdges.find(e => e.id === edgeId)
+            if (foundEdge) {
+              updateWorkspace({ selectedEdge: foundEdge, selectedNode: null })
+            }
+          },
+          onDelete: (edgeId) => {
+            setWorkspaces(prev => prev.map(w => 
+              w.id === activeWorkspaceId ? { ...w, edges: w.edges.filter(e => e.id !== edgeId) } : w
+            ))
+            setTimeout(saveToHistory, 0)
+          },
+        }
+      }
+    })
+  }, [currentWorkspace?.edges, nodes, activeWorkspaceId, getEdgeColor, updateWorkspace, saveToHistory])
+
+  // Add new workspace
+  const addWorkspace = () => {
+    const newCounter = workspaceCounter + 1
+    const newWorkspace = {
+      id: Date.now(),
+      name: `W${newCounter}`,
+      nodes: [{
+        id: `start-initial-${Date.now()}`,
+        type: 'start',
+        position: { x: 250, y: 50 },
+        data: { label: 'Initiator', assignee: 'Admin' },
+      }],
+      edges: [],
+      selectedNode: null,
+      selectedEdge: null,
+      deletedNodes: [],
+    }
+    setWorkspaces([...workspaces, newWorkspace])
+    setActiveWorkspaceId(newWorkspace.id)
+    setWorkspaceCounter(newCounter)
+  }
+
+  // Close workspace
+  const closeWorkspace = (workspaceId) => {
+    if (workspaces.length === 1) return // Don't close last workspace
+    const newWorkspaces = workspaces.filter(w => w.id !== workspaceId)
+    setWorkspaces(newWorkspaces)
+    if (activeWorkspaceId === workspaceId) {
+      setActiveWorkspaceId(newWorkspaces[0].id)
+    }
+  }
 
   const onNodesChange = React.useCallback((changes) => {
     // Skip saving history for select changes
@@ -157,10 +216,44 @@ const WorkflowBuilder = () => {
       id: `e${connection.source}-${connection.target}`,
       source: connection.source,
       target: connection.target,
-      type: 'default',
+      type: 'custom',
+      data: {
+        label: '',
+      },
     }
     setWorkspaces(prev => prev.map(w => 
       w.id === activeWorkspaceId ? { ...w, edges: [...w.edges, newEdge] } : w
+    ))
+    setTimeout(saveToHistory, 0)
+  }, [activeWorkspaceId, saveToHistory])
+
+  // Update edge data
+  const updateEdgeData = React.useCallback((edgeId, newData) => {
+    setWorkspaces(prev => prev.map(w => {
+      if (w.id === activeWorkspaceId) {
+        return {
+          ...w,
+          edges: w.edges.map(edge => 
+            edge.id === edgeId 
+              ? { ...edge, data: { ...edge.data, ...newData } } 
+              : edge
+          )
+        }
+      }
+      return w
+    }))
+    setTimeout(saveToHistory, 0)
+  }, [activeWorkspaceId, saveToHistory])
+
+  // Close edge panel
+  const handleCloseEdgePanel = React.useCallback(() => {
+    updateWorkspace({ selectedEdge: null })
+  }, [updateWorkspace])
+
+  // Delete edge (used by EdgeConfigPanel)
+  const deleteEdge = React.useCallback((edgeId) => {
+    setWorkspaces(prev => prev.map(w => 
+      w.id === activeWorkspaceId ? { ...w, edges: w.edges.filter(e => e.id !== edgeId) } : w
     ))
     setTimeout(saveToHistory, 0)
   }, [activeWorkspaceId, saveToHistory])
@@ -717,6 +810,25 @@ const WorkflowBuilder = () => {
               onUpdateNode={handleUpdateNode}
               onClose={handleClosePanel}
               onDelete={() => deleteNode(selectedNode.id)}
+            />
+          </>
+        )}
+
+        {/* Right Sidebar - Edge Config Panel */}
+        {selectedEdge && !selectedNode && (
+          <>
+            {/* Backdrop for mobile */}
+            <div 
+              className="fixed inset-0 bg-black/50 md:hidden z-40"
+              onClick={handleCloseEdgePanel}
+            />
+            <EdgeConfigPanel
+              selectedEdge={selectedEdge}
+              sourceNode={nodes.find(n => n.id === selectedEdge.source)}
+              targetNode={nodes.find(n => n.id === selectedEdge.target)}
+              onUpdateEdge={updateEdgeData}
+              onClose={handleCloseEdgePanel}
+              onDelete={deleteEdge}
             />
           </>
         )}
