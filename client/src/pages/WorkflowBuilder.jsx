@@ -260,6 +260,100 @@ const WorkflowBuilder = () => {
     }))
   }, [activeWorkspaceId])
 
+  // Auto-layout function
+  const autoLayout = React.useCallback(() => {
+    setWorkspaces(prev => prev.map(w => {
+      if (w.id === activeWorkspaceId) {
+        const layoutNodes = [...w.nodes]
+        const layoutEdges = [...w.edges]
+        
+        // Build adjacency list
+        const adjacencyList = {}
+        layoutNodes.forEach(node => {
+          adjacencyList[node.id] = []
+        })
+        layoutEdges.forEach(edge => {
+          if (adjacencyList[edge.source]) {
+            adjacencyList[edge.source].push(edge.target)
+          }
+        })
+        
+        // Find start nodes (nodes with no incoming edges)
+        const incomingCount = {}
+        layoutNodes.forEach(node => {
+          incomingCount[node.id] = 0
+        })
+        layoutEdges.forEach(edge => {
+          incomingCount[edge.target] = (incomingCount[edge.target] || 0) + 1
+        })
+        
+        const startNodes = layoutNodes.filter(node => incomingCount[node.id] === 0)
+        
+        // BFS to arrange nodes in levels
+        const levels = []
+        const visited = new Set()
+        const queue = startNodes.map(node => ({ node, level: 0 }))
+        
+        while (queue.length > 0) {
+          const { node, level } = queue.shift()
+          
+          if (visited.has(node.id)) continue
+          visited.add(node.id)
+          
+          if (!levels[level]) levels[level] = []
+          levels[level].push(node)
+          
+          const children = adjacencyList[node.id] || []
+          children.forEach(childId => {
+            const childNode = layoutNodes.find(n => n.id === childId)
+            if (childNode && !visited.has(childId)) {
+              queue.push({ node: childNode, level: level + 1 })
+            }
+          })
+        }
+        
+        // Position nodes
+        const horizontalSpacing = 250
+        const verticalSpacing = 150
+        const startX = 100
+        const startY = 100
+        
+        const positionedNodes = layoutNodes.map(node => {
+          let levelIndex = -1
+          let positionInLevel = -1
+          
+          levels.forEach((level, idx) => {
+            const pos = level.findIndex(n => n.id === node.id)
+            if (pos !== -1) {
+              levelIndex = idx
+              positionInLevel = pos
+            }
+          })
+          
+          if (levelIndex === -1) {
+            return node // Keep original position if not found in levels
+          }
+          
+          const levelWidth = levels[levelIndex].length
+          const x = startX + positionInLevel * horizontalSpacing
+          const y = startY + levelIndex * verticalSpacing
+          
+          return {
+            ...node,
+            position: { x, y }
+          }
+        })
+        
+        return {
+          ...w,
+          nodes: positionedNodes
+        }
+      }
+      return w
+    }))
+    setTimeout(saveToHistory, 0)
+  }, [activeWorkspaceId, saveToHistory])
+
   // Undo function
   const undo = useCallback(() => {
     const workspaceHistory = history[activeWorkspaceId]
@@ -435,6 +529,16 @@ const WorkflowBuilder = () => {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button 
+                onClick={autoLayout}
+                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm font-medium flex items-center gap-2"
+                title="Automatically arrange nodes"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
+                </svg>
+                Auto-layout
+              </button>
               <button 
                 onClick={() => setIsValidationOpen(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
