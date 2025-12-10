@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const location = useLocation()
+  const isWorkflowBuilder = location.pathname === '/workflow-builder'
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center space-x-2 group">
+          <NavLink to="/" className="flex items-center space-x-2 group -ml-2">
             <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -21,7 +23,8 @@ const Navbar = () => {
           </NavLink>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-1">
+          {!isWorkflowBuilder && (
+            <ul className="hidden md:flex items-center space-x-1">
             <li>
               <NavLink 
                 to="/" 
@@ -73,25 +76,28 @@ const Navbar = () => {
               </NavLink>
             </li>
           </ul>
+          )}
 
           {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden p-2.5 rounded-lg hover:bg-gray-100 transition-colors active:scale-95"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
-              )}
-            </svg>
-          </button>
+          {!isWorkflowBuilder && (
+            <button 
+              className="md:hidden p-2.5 rounded-lg hover:bg-gray-100 transition-colors active:scale-95"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
+                )}
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
+        {!isWorkflowBuilder && isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
             <ul className="space-y-2">
               <li>

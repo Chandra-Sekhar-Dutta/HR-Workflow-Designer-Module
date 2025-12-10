@@ -5,7 +5,6 @@ import {
   Controls,
   MiniMap,
   addEdge,
-  Panel,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import CustomEdge from './CustomEdge'
@@ -104,70 +103,23 @@ const WorkflowCanvas = ({
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        className="bg-white"
+        className="bg-gray-50"
         deleteKeyCode="Delete"
         multiSelectionKeyCode="Control"
       >
-        <Background color="#e5e7eb" gap={20} size={1} />
+        <Background 
+          variant="dots"
+          color="#94a3b8"
+          gap={20}
+          size={1.5}
+          className="bg-white"
+        />
         <Controls 
           className="bg-white shadow-md rounded-lg" 
           showZoom={true} 
           showFitView={true} 
           showInteractive={true}
         />
-        <Panel position="top-right" className="bg-white shadow-md rounded-lg p-2 flex gap-2">
-          <button
-            onClick={() => {
-              const rfInstance = reactFlowWrapper.current
-              if (rfInstance) {
-                // Save workflow logic here
-                console.log('Save workflow')
-              }
-            }}
-            className="px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium"
-            title="Save Workflow"
-          >
-             Save
-          </button>
-          <button
-            onClick={() => {
-              if (onNodesChange) {
-                nodes.forEach(node => {
-                  onNodesChange([{ type: 'remove', id: node.id }])
-                })
-              }
-              if (onEdgesChange) {
-                edges.forEach(edge => {
-                  onEdgesChange([{ type: 'remove', id: edge.id }])
-                })
-              }
-            }}
-            className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium"
-            title="Clear Canvas"
-          >
-             Clear
-          </button>
-          <button
-            onClick={() => {
-              // Export as JSON
-              const workflow = {
-                nodes: nodes,
-                edges: edges,
-              }
-              const dataStr = JSON.stringify(workflow, null, 2)
-              const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr)
-              const exportFileDefaultName = 'workflow.json'
-              const linkElement = document.createElement('a')
-              linkElement.setAttribute('href', dataUri)
-              linkElement.setAttribute('download', exportFileDefaultName)
-              linkElement.click()
-            }}
-            className="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium"
-            title="Export Workflow"
-          >
-             Export
-          </button>
-        </Panel>
       </ReactFlow>
     </div>
   )

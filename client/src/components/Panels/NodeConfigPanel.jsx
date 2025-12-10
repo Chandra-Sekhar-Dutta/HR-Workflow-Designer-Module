@@ -8,10 +8,10 @@ import EndNodeForm from '../Forms/EndNodeForm'
 const NodeConfigPanel = ({ selectedNode, onUpdateNode, onClose, onDelete }) => {
   if (!selectedNode) {
     return (
-      <div className="w-80 bg-gray-50 border-l border-gray-300 p-6">
+      <div className="fixed md:relative inset-y-0 right-0 w-full sm:w-96 md:w-80 lg:w-96 bg-gray-50 border-l border-gray-300 p-6 shadow-lg md:shadow-none z-50">
         <div className="text-center text-gray-500">
-          <p className="text-lg font-semibold mb-2">No Node Selected</p>
-          <p className="text-sm">Click on a node to edit its properties</p>
+          <p className="text-base sm:text-lg font-semibold mb-2">No Node Selected</p>
+          <p className="text-xs sm:text-sm">Click on a node to edit its properties</p>
         </div>
       </div>
     )
@@ -41,36 +41,38 @@ const NodeConfigPanel = ({ selectedNode, onUpdateNode, onClose, onDelete }) => {
   }
 
   return (
-    <div className="w-80 bg-white border-l border-gray-300 p-4 overflow-y-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold text-gray-800">Node Configuration</h2>
+    <div className="fixed md:relative inset-y-0 right-0 w-full sm:w-96 md:w-80 lg:w-96 bg-white border-l border-gray-300 overflow-y-auto shadow-lg md:shadow-none z-50">
+      <div className="sticky top-0 bg-white border-b border-gray-200 px-3 sm:px-4 py-3 flex justify-between items-center z-10">
+        <h2 className="text-base sm:text-lg font-bold text-gray-800">Node Configuration</h2>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 text-xl"
+          className="text-gray-500 hover:text-gray-700 text-xl p-1"
         >
           ×
         </button>
       </div>
-      <div className="mb-4 p-3 bg-gray-100 rounded">
-        <div className="flex justify-between items-start">
-          <div>
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold">Type:</span> {selectedNode.type}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              <span className="font-semibold">ID:</span> {selectedNode.id}
-            </p>
+      <div className="p-3 sm:p-4">
+        <div className="mb-4 p-2 sm:p-3 bg-gray-100 rounded">
+          <div className="flex justify-between items-start gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">
+                <span className="font-semibold">Type:</span> {selectedNode.type}
+              </p>
+              <p className="text-xs text-gray-500 mt-1 truncate">
+                <span className="font-semibold">ID:</span> {selectedNode.id}
+              </p>
+            </div>
+            <button
+              onClick={handleDelete}
+              className="px-2 sm:px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors shrink-0"
+              title="Delete Node"
+            >
+              Delete
+            </button>
           </div>
-          <button
-            onClick={handleDelete}
-            className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
-            title="Delete Node"
-          >
-            Delete
-          </button>
         </div>
+        {renderForm()}
       </div>
-      {renderForm()}
     </div>
   )
 }
