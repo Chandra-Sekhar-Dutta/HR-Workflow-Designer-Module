@@ -418,17 +418,17 @@ const WorkflowBuilder = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <NavLink to="/" className="text-gray-600 hover:text-gray-900">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-white border-b border-gray-200 px-3 sm:px-4 md:px-6 py-2 sm:py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+          <NavLink to="/" className="text-gray-600 hover:text-gray-900 p-1">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
           </NavLink>
-          <h1 className="text-lg font-medium text-gray-900">Workflow Name</h1>
+          <h1 className="text-sm sm:text-base md:text-lg font-medium text-gray-900 truncate">Workflow Name</h1>
         </div>
-        <button className="text-gray-400 hover:text-gray-600">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button className="text-gray-400 hover:text-gray-600 p-1">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </button>
@@ -436,23 +436,23 @@ const WorkflowBuilder = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4 gap-4">
+        {/* Sidebar - Hidden on mobile */}
+        <div className="hidden md:flex w-14 lg:w-16 bg-white border-r border-gray-200 flex-col items-center py-3 md:py-4 gap-3 md:gap-4">
           <button 
             onClick={() => setShowNodePalette(true)}
-            className="w-10 h-10 flex items-center justify-center text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+            className="w-9 h-9 lg:w-10 lg:h-10 flex items-center justify-center text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
             title="Stages"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
             </svg>
           </button>
           <button 
             onClick={addWorkspace}
-            className="w-10 h-10 flex items-center justify-center text-emerald-600 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors"
+            className="w-9 h-9 lg:w-10 lg:h-10 flex items-center justify-center text-emerald-600 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors"
             title="Add Workspace"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
           </button>
@@ -461,21 +461,21 @@ const WorkflowBuilder = () => {
         {/* Canvas Area */}
         <div className="flex-1 flex flex-col">
           {/* Workspace Tabs */}
-          <div className="bg-white border-b border-gray-200 flex items-center px-2 overflow-x-auto h-15">
+          <div className="bg-white border-b border-gray-200 flex items-center px-1 sm:px-2 overflow-x-auto scrollbar-hide">
             {workspaces.map((workspace) => (
               <div
                 key={workspace.id}
-                className={`group flex items-center gap-2 px-4 py-3 border-b-2 cursor-pointer transition-colors ${
+                className={`group flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border-b-2 cursor-pointer transition-colors ${
                   activeWorkspaceId === workspace.id
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                     : 'border-transparent hover:bg-gray-50 text-gray-600'
                 }`}
                 onClick={() => setActiveWorkspaceId(workspace.id)}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
                 </svg>
-                <span className="text-sm font-medium whitespace-nowrap">{workspace.name}</span>
+                <span className="text-xs sm:text-sm font-medium whitespace-nowrap">{workspace.name}</span>
                 {workspaces.length > 1 && (
                   <button
                     onClick={(e) => {
@@ -495,61 +495,63 @@ const WorkflowBuilder = () => {
           </div>
 
           {/* Canvas Header */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white border-b border-gray-200 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
                 </svg>
-                <h2 className="text-lg font-semibold text-gray-900">Stages</h2>
+                <h2 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">Stages</h2>
               </div>
               
               {/* Undo/Redo Buttons */}
-              <div className="flex items-center gap-1 border-l pl-4">
+              <div className="flex items-center gap-0.5 sm:gap-1 border-l pl-2 sm:pl-3 md:pl-4">
                 <button
                   onClick={undo}
                   disabled={(historyIndex[activeWorkspaceId] ?? -1) <= 0}
-                  className="p-2 rounded hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 sm:p-2 rounded hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   title="Undo (Ctrl+Z)"
                 >
-                  <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
                   </svg>
                 </button>
                 <button
                   onClick={redo}
                   disabled={(historyIndex[activeWorkspaceId] ?? -1) >= ((history[activeWorkspaceId]?.length ?? 1) - 1)}
-                  className="p-2 rounded hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 sm:p-2 rounded hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   title="Redo (Ctrl+Shift+Z)"
                 >
-                  <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/>
                   </svg>
                 </button>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4">
               <button 
                 onClick={autoLayout}
-                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm font-medium flex items-center gap-2"
+                className="hidden lg:flex px-3 md:px-4 py-1.5 md:py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-xs md:text-sm font-medium items-center gap-1.5 md:gap-2"
                 title="Automatically arrange nodes"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
                 </svg>
-                Auto-layout
+                <span className="hidden md:inline">Auto-layout</span>
               </button>
               <button 
                 onClick={() => setIsValidationOpen(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
+                className="px-2 sm:px-3 md:px-4 py-1.5 md:py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-xs md:text-sm font-medium"
               >
-                Validate
+                <span className="hidden sm:inline">Validate</span>
+                <span className="sm:hidden">Val</span>
               </button>
               <button 
                 onClick={() => setIsSandboxOpen(true)}
-                className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium"
+                className="px-2 sm:px-3 md:px-4 py-1.5 md:py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-xs md:text-sm font-medium"
               >
-                Live Preview
+                <span className="hidden sm:inline">Live Preview</span>
+                <span className="sm:hidden">Preview</span>
               </button>
             </div>
           </div>
@@ -572,10 +574,10 @@ const WorkflowBuilder = () => {
           {/* Add Stage Button */}
           <button
             onClick={() => setShowNodePalette(true)}
-            className="fixed bottom-8 right-8 w-14 h-14 bg-red-400 hover:bg-red-500 rounded-full shadow-lg flex items-center justify-center text-white transition-colors"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-red-400 hover:bg-red-500 rounded-full shadow-lg flex items-center justify-center text-white transition-colors z-40 active:scale-95"
             title="Add Stage"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
             </svg>
           </button>
