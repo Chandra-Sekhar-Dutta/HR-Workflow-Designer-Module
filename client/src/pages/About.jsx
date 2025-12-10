@@ -5,13 +5,13 @@ const About = () => {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 py-20 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/20 rounded-full filter blur-3xl opacity-60"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400/20 rounded-full filter blur-3xl opacity-60"></div>
+      <section className="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 py-12 sm:py-16 md:py-20 overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-400/20 rounded-full filter blur-3xl opacity-60"></div>
+        <div className="absolute bottom-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-teal-400/20 rounded-full filter blur-3xl opacity-60"></div>
         
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 Transforming HR
               </span>
@@ -20,7 +20,7 @@ const About = () => {
                 One Workflow at a Time
               </span>
             </h1>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
               We're on a mission to revolutionize HR management through innovative, intelligent workflow automation that empowers teams to focus on what truly matters.
             </p>
           </div>
@@ -43,22 +43,22 @@ const About = () => {
                 Our platform empowers organizations to streamline their HR processes, reduce manual work, and create exceptional employee experiences from day one.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white">
-                <div className="text-4xl font-bold mb-2">1000+</div>
-                <div className="text-emerald-100">Companies Trust Us</div>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">1000+</div>
+                <div className="text-emerald-100 text-xs sm:text-sm md:text-base">Companies Trust Us</div>
               </div>
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white">
-                <div className="text-4xl font-bold mb-2">50M+</div>
-                <div className="text-blue-100">Workflows Processed</div>
+              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">50M+</div>
+                <div className="text-blue-100 text-xs sm:text-sm md:text-base">Workflows Processed</div>
               </div>
-              <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 text-white">
-                <div className="text-4xl font-bold mb-2">99.9%</div>
-                <div className="text-purple-100">Uptime Guaranteed</div>
+              <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">99.9%</div>
+                <div className="text-purple-100 text-xs sm:text-sm md:text-base">Uptime Guaranteed</div>
               </div>
-              <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-6 text-white">
-                <div className="text-4xl font-bold mb-2">24/7</div>
-                <div className="text-orange-100">Support Available</div>
+              <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">24/7</div>
+                <div className="text-orange-100 text-xs sm:text-sm md:text-base">Support Available</div>
               </div>
             </div>
           </div>

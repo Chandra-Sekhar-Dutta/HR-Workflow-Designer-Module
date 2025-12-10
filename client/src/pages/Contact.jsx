@@ -24,18 +24,18 @@ const Contact = () => {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 py-20 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/20 rounded-full filter blur-3xl opacity-60"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400/20 rounded-full filter blur-3xl opacity-60"></div>
+      <section className="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 py-12 sm:py-16 md:py-20 overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-400/20 rounded-full filter blur-3xl opacity-60"></div>
+        <div className="absolute bottom-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-teal-400/20 rounded-full filter blur-3xl opacity-60"></div>
         
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 Let's Connect
               </span>
             </h1>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
               Have questions about FlowForge HR? We're here to help. Send us a message and we'll respond within 24 hours.
             </p>
           </div>
@@ -47,9 +47,9 @@ const Contact = () => {
         <div className="container mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
             {/* Contact Info Cards */}
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border border-emerald-100">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                   </svg>
@@ -94,8 +94,8 @@ const Contact = () => {
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Send us a message</h2>
                 <p className="text-gray-600 mb-8">Fill out the form below and we'll get back to you within 24 hours.</p>
                 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                         Full Name *

@@ -176,52 +176,52 @@ Remember: You are representing FlowForge HR, so be professional but approachable
     <div className="min-h-screen pt-16 bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-16 z-10">
-        <div className="container mx-auto px-6 lg:px-8 py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <NavLink 
                 to="/contact" 
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 title="Back to Contact"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </NavLink>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                   Live Chat Support
                 </h1>
-                <p className="text-sm text-gray-600">Powered by AI • Available 24/7</p>
+                <p className="text-xs sm:text-sm text-gray-600">Powered by AI • Available 24/7</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-gray-600">Online</span>
+              <span className="text-xs sm:text-sm text-gray-600">Online</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Chat Container */}
-      <div className="container mx-auto px-6 lg:px-8 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
             {/* Messages Area */}
-            <div className="h-[600px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50/50 to-white">
+            <div className="h-[400px] sm:h-[500px] md:h-[600px] overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 bg-gradient-to-b from-gray-50/50 to-white">
               {messages.map((message, index) => (
                 <div
                   key={index}
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                    className={`max-w-[85%] sm:max-w-[80%] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 ${
                       message.role === 'user'
                         ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white'
                         : 'bg-white border border-gray-200 text-gray-800 shadow-sm'
                     }`}
                   >
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                   </div>
                 </div>
               ))}
@@ -242,15 +242,15 @@ Remember: You are representing FlowForge HR, so be professional but approachable
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200 p-4 bg-white">
-              <div className="flex items-end gap-3">
+            <div className="border-t border-gray-200 p-3 sm:p-4 bg-white">
+              <div className="flex items-end gap-2 sm:gap-3">
                 <div className="flex-1">
                   <textarea
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type your message here... (Press Enter to send)"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                    placeholder="Type your message..."
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg sm:rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     rows="2"
                     disabled={isLoading}
                   />
@@ -258,22 +258,22 @@ Remember: You are representing FlowForge HR, so be professional but approachable
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isLoading}
-                  className="px-6 py-3 bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-xl hover:from-emerald-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium shadow-lg hover:shadow-xl"
+                  className="px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-lg sm:rounded-xl hover:from-emerald-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium shadow-lg hover:shadow-xl"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                   </svg>
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 mt-2 hidden sm:block">
                 Press Enter to send, Shift+Enter for new line
               </p>
             </div>
           </div>
 
           {/* Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
+            <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-200 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
                   <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
